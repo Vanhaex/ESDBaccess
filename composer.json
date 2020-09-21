@@ -1,0 +1,14 @@
+{
+    "name": "vanhaex/dbaccess",
+    "description": "Une interface de connexion \u0000 la base de donn\u0000es qui utilise le moteur MySQLi",
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "require": {
+        "psr/log": "^1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "DBaccess" : "DBaccess"
+        }
+    }
+}
