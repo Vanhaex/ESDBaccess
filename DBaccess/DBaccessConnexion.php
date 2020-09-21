@@ -6,7 +6,7 @@ namespace DBaccess;
  * Classe abstraite qui implémente les méthodes pour les infos de connexion
  * 
  */
-class DBaccessConnection implements DBaccessConnexionInterface{
+class DBaccessConnexion implements DBaccessConnexionInterface{
 
     public $host;
     public $port;
