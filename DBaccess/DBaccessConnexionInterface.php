@@ -21,6 +21,7 @@ interface DBaccessConnexionInterface {
      * Le port pour la connexion
      * @param int $port
      * 
+     * @return void
      */
     public function GetPort($port);
 
@@ -28,6 +29,7 @@ interface DBaccessConnexionInterface {
      * Le nom d'utilisateur pour la connexion
      * @param string $user
      * 
+     * @return void
      */
     public function GetUser($user);
 
@@ -35,6 +37,7 @@ interface DBaccessConnexionInterface {
      * Le password pour la connexion
      * @param string $password
      * 
+     * @return void
      */
     public function GetPassword($password);
 
@@ -42,6 +45,7 @@ interface DBaccessConnexionInterface {
      * Le nom de la base de données pour la connexion
      * @param string $database
      * 
+     * @return void
      */
     public function GetDatabase($database);
 }
