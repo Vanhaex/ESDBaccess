@@ -1,6 +1,6 @@
 <?php
 
-namespace DBaccess;
+namespace DBACCESS;
 
 /**
  * Classe abstraite qui implémente les méthodes pour les infos de connexion
@@ -8,11 +8,16 @@ namespace DBaccess;
  */
 class DBaccessConnexion implements DBaccessConnexionInterface{
 
-    public $host;
-    public $port;
-    public $user;
-    public $password;
-    public $database;
+    private $host;
+    private $port;
+    private $user;
+    private $password;
+    private $database;
+
+    public function __construct(string $host, int $port, string $user, string $password, string $database)
+    {
+        
+    }
 
     public function GetHost($host)
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace DBaccess;
+namespace DBACCESS;
 
 /**
  * 
