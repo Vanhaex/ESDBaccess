@@ -1,14 +1,17 @@
 {
     "name": "vanhaex/dbaccess",
-    "description": "Une interface de connexion \u0000 la base de donn\u0000es qui utilise le moteur MySQLi",
+    "description": "Une interface de connexion à la base de données qui utilise le moteur MySQLi",
+    "version": "1.0.0",
     "license": "MIT",
     "minimum-stability": "stable",
     "require": {
-        "psr/log": "^1.1"
+        "php": ">=7.2",
+        "psr/log": "^1.1",
+        "ext-mysqli":"*"
     },
     "autoload": {
         "psr-4": {
-            "DBaccess" : "DBaccess"
+            "DBACCESS\\" : "/src"
         }
     }
 }
