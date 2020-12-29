@@ -18,8 +18,8 @@ interface DBaccessMySQLiInterface{
     public function preparedQuery();                // Requête préparée
 
     public function getAllResults();                // Récupérer tous les résultats sous forme d'array
-    public function getNextResult();                // Récupérer le prichain résultat sous forme d'array
-    public function 
+    public function getNextResult();                // Récupérer le prochain résultat sous forme d'array
+    public function getNumberResults();             // Récupérer le nombre de résultats obtenus
     
 }
 
