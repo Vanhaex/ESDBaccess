@@ -15,7 +15,7 @@ interface DBaccessMySQLiInterface{
     public function close(): void;                  // Ferme la connexion
 
     public function query();                        // Requête SQL simple
-    public function preparedQuery();                // Requête préparée
+    public function preparedQuery(string $prepared_query, string $bind_type, ...$bind_data);                // Requête préparée
 
     public function getAllResults();                // Récupérer tous les résultats sous forme d'array
     public function getNextResult();                // Récupérer le prochain résultat sous forme d'array
