@@ -2,17 +2,27 @@
 
 namespace DBACCESS;
 
-use Psr\Log;
+use mysqli;
+use Psr\Log\LoggerInterface;
 
 class DBaccessMySQLi implements DBaccessMySQLiInterface
 {
-    public $mysqli;
+    private $mysqli;    // object mysqli
 
-    public $host;
-    public $port;
-    public $user;
-    public $password;
-    public $database;
+    private $host;
+    private $port;
+    private $user;
+    private $password;
+    private $database;
+
+    private $logger;    // object log
+
+    public function initConnexion(DBaccessConnexionInterface $informations)
+    {
+        $this->setHost($informations->GetHost, $informations->GetPort);
+        $this->setUser($informations->GetUser, $informations->GetPassword);
+        $this->setDatabase($informations->GetDatabase);
+    }
 
     public function setHost($host, $port)
     {
@@ -31,12 +41,17 @@ class DBaccessMySQLi implements DBaccessMySQLiInterface
         $this->database = $database;
     }
 
-    public function initConnexion(DBaccessConnexionInterface $informations)
+    public function open()
+    {   
+        
+    }
+
+    /**
+     * Les logs c'est bien !
+     */
+    public function setLogger(LoggerInterface $logger)
     {
-        if(empty($host) || empty($port) || empty($user) || empty($password) || empty($database))
-        {
-            
-        }
+        $this->logger = $logger;
     }
 }
 

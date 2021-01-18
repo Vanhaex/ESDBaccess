@@ -2,24 +2,82 @@
 
 namespace DBACCESS;
 
+/**
+ * 
+ * Décrit les fonctions principales principales MySQLi (connexion, requêtes, résultats, ...)
+ * 
+ */
 interface DBaccessMySQLiInterface{
 
+    /**
+     * Initialise la connexion à la base de données
+     * 
+     * @param $informations
+     */
     public function initConnexion(DBaccessConnexionInterface $informations); // Initialise la connexion à la bdd
 
-    public function setHost(string $host, int $port);          // Initialise l'host et le port pour la connexion
-    public function setUser(string $user, string $password);      // Initialise le login et mdp pour la connexion
+    /**
+     * Retourne l'hôte et le port pour la connexion à la base de données
+     * 
+     * @param $host
+     * @param $port
+     */
+    public function setHost(string $host, int $port);
+
+    /**
+     * Initialise le login et mdp pour la connexion
+     * 
+     * @param $user
+     * @param $password
+     */
+    public function setUser(string $user, string $password);
+
+    /**
+     * Initialise le login et mdp pour la connexion
+     * 
+     * @param $database
+     */
     public function setDatabase(string $database);
 
-    public function open(): void;                   // Ouvre la connexion
-    public function reopen(): void;                 // Relance la connexion si besoin
-    public function close(): void;                  // Ferme la connexion
+    /**
+     * Ouvre la connexion
+     */
+    public function open();
 
-    public function query();                        // Requête SQL simple
-    public function preparedQuery(string $prepared_query, string $bind_type, ...$bind_data);                // Requête préparée
+    /**
+     * Relance la connexion si besoin
+     */
+    public function reopen();
 
-    public function getAllResults();                // Récupérer tous les résultats sous forme d'array
-    public function getNextResult();                // Récupérer le prochain résultat sous forme d'array
-    public function getNumberResults();             // Récupérer le nombre de résultats obtenus
+    /**
+     * Ferme la connexion
+     */
+    public function close();
+
+    /**
+     * Fonction qui éxecute une requête SQL simple
+     */
+    public function query(string $query);
+
+    /**
+     * Fonction qui execute une requête préparée
+     */
+    public function preparedQuery(string $prepared_query, string $bind_type, ...$bind_data);
+
+    /**
+     * Récupère tous les résultats sous forme d'array
+     */
+    public function getAllResults();
+
+    /**
+     * Récupère le prochain résultat sous forme d'array
+     */
+    public function getNextResult();
+
+    /**
+     * Retourne le nombre de lignes obtenues lors de la dernière requête
+     */
+    public function getNumberResults();
     
 }
 
