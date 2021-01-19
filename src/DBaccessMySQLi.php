@@ -43,15 +43,15 @@ class DBaccessMySQLi implements DBaccessMySQLiInterface
 
     public function open()
     {   
-        
-    }
+        if(!is_null($this->logger)){
+            $this->logger->info("Connexion à la base de données");
+        }
 
-    /**
-     * Les logs c'est bien !
-     */
-    public function setLogger(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
+        if(empty($this->host) || empty($this->port) || empty($this->user) || empty($this->password) || empty($this->database)){
+            $this->logger->error("Impossible de se connecter à la base de données. Des informations sont manquantes");
+        }
+
+        
     }
 }
 
