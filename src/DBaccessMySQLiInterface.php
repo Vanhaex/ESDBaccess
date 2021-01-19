@@ -2,12 +2,14 @@
 
 namespace DBACCESS;
 
+use Psr\Log\LoggerAwareInterface;
+
 /**
  * 
  * Décrit les fonctions principales principales MySQLi (connexion, requêtes, résultats, ...)
  * 
  */
-interface DBaccessMySQLiInterface{
+interface DBaccessMySQLiInterface extends LoggerAwareInterface{
 
     /**
      * Initialise la connexion à la base de données
