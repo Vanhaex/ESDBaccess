@@ -16,7 +16,11 @@ class DBaccessConnexion implements DBaccessConnexionInterface{
 
     public function __construct(string $host, int $port, string $user, string $password, string $database)
     {
-        
+        $this->host = $host;
+        $this->port = $port;
+        $this->user = $user;
+        $this->password = $password;
+        $this->database = $database;
     }
 
     public function GetHost($host)
