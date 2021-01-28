@@ -81,6 +81,10 @@ interface DBaccessMySQLiInterface extends LoggerAwareInterface{
      */
     public function getNumberResults();
     
+    /**
+     * Vide les variables utilisées par les requêtes
+     */
+    public function reset_mysqli();
 }
 
 ?>
