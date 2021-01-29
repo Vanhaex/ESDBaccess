@@ -4,7 +4,7 @@
     "version": "1.0.0",
     "type": "package",
     "license": "MIT",
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "require": {
         "php": ">=7.2",
         "psr/log": "^1.1",
