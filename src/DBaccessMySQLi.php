@@ -146,16 +146,16 @@ class DBaccessMySQLi implements DBaccessMySQLiInterface
                         array_push($this->$result_store, $data);
                     }
                 }
+
+                $this->num_of_rows = $this->mysqli->num_rows;
+
+                $this->result_store->free();
                 
             }
             else{
                 $this->affected_rows = $this->mysqli->affected_rows;
                 $this->insert_id = $this->mysqli->insert_id;
             }
-
-            $this->num_of_rows = $this->mysqli->num_rows;
-
-            $this->result_store->free();
         }
         else{
             $this->err_code = $this->mysqli->errno;
@@ -177,7 +177,7 @@ class DBaccessMySQLi implements DBaccessMySQLiInterface
         $stmt = $this->mysqli->prepare($prepared_query);
 
         if ($stmt == true) {
-            $stmt->bind_param($bind_type[0], $bind_data[]);
+            $stmt->bind_param($bind_type, $bind_data);
 
             $execute_query = $stmt->execute();
 
@@ -198,17 +198,19 @@ class DBaccessMySQLi implements DBaccessMySQLiInterface
                             array_push($this->$result_store, $data);
                         }
                     }
+
+                    $this->num_of_rows = $this->mysqli->num_rows;
+    
+                    $this->result_store->free();
                 }
                 else{
                     $this->affected_rows = $this->mysqli->affected_rows;
                     $this->insert_id = $this->mysqli->insert_id;
                 }
-    
-                $this->num_of_rows = $this->mysqli->num_rows;
-    
-                $this->result_store->free();
             }
             else {
+                $this->err_code = $this->mysqli->errno;
+                $this->err_string = $this->mysqli->error;
                 $this->logger->error("Erreur lors de l'éxecution de la requete préparée");
             }
         }
@@ -221,17 +223,59 @@ class DBaccessMySQLi implements DBaccessMySQLiInterface
         $stmt->close();
     }
 
+    public function getAllResults() {
+        return $this->result_store;
+    }
+
+    public function getNextResult() {
+        $resultat = current($this->result_store);
+        next($resultat);
+
+        if((!is_array($resultat)) || (!is_object($resultat))){
+            $this->logger->error("Erreur lors de la récupération. Le résultat n'est pas un array ou un object");
+        }
+    }
+
+    public function getNumberResults()
+    {
+        return $this->num_of_rows;
+    }
+
+    public function getAffectedRows()
+    {
+        return $this->affected_rows;
+    }
+
+    public function getLastID()
+    {
+        return $this->insert_id;
+    }
+
+    public function getErrorCode()
+    {
+        return $this->err_code;
+    }
+
+    public function getErrorString()
+    {
+        return $this->err_string;
+    }
+
     public function reset_mysqli()
     {
         // on vide les variables pour faire du ménage !
         $this->err_code = 0;
         $this->err_string = null;
         $this->numOfRows = 0;
-
+        $this->result_store;
+        $this->insert_id;
+        $this->affected_rows;
+        $this->num_of_rows;
     }
 
-    public function getAllResults() {
-        return $this->
+    public function setLogger(LoggerInterface $logger)
+    {
+        return $this->logger;
     }
 }
 

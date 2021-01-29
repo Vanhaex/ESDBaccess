@@ -80,6 +80,26 @@ interface DBaccessMySQLiInterface extends LoggerAwareInterface{
      * Retourne le nombre de lignes obtenues lors de la dernière requête
      */
     public function getNumberResults();
+
+    /**
+     * Retourne Les lignes qui ont été traitées lors de la dernière requête
+     */
+    public function getAffectedRows();
+
+    /**
+     * Retourne l'ID de la dernière ligne
+     */
+    public function getLastID();
+
+    /**
+     * Retourne le code d'erreur MySQL
+     */
+    public function getErrorCode();
+
+    /**
+     * Retourne le message d'erreur MySQL
+     */
+    public function getErrorString();
     
     /**
      * Vide les variables utilisées par les requêtes
