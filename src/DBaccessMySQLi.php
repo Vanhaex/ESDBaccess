@@ -267,10 +267,10 @@ class DBaccessMySQLi implements DBaccessMySQLiInterface
         $this->err_code = 0;
         $this->err_string = null;
         $this->numOfRows = 0;
-        $this->result_store;
-        $this->insert_id;
-        $this->affected_rows;
-        $this->num_of_rows;
+        $this->result_store = null;
+        $this->insert_id = null;
+        $this->affected_rows = null;
+        $this->num_of_rows = null;
     }
 
     public function setLogger(LoggerInterface $logger)
