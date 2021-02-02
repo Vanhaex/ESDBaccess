@@ -268,32 +268,30 @@ class DBaccessMySQLi implements DBaccessMySQLiInterface
         // on vide les variables pour faire du ménage !
         $this->err_code = 0;
         $this->err_string = null;
-        $this->numOfRows = 0;
-        $this->result_store = null;
-        $this->insert_id = null;
-        $this->affected_rows = null;
-        $this->num_of_rows = null;
+        $this->result_store = 0;
+        $this->insert_id = 0;
+        $this->affected_rows = 0;
+        $this->num_of_rows = 0;
     }
 
     public function getTransaction()
     {
-        if ($this->transaction == true){
-            $this->mysqli->begin_transaction();
-        }
+        return $this->mysqli->begin_transaction();
     }
 
     public function commit()
     {
-        if ($this->transaction == true){
-            $this->mysqli->commit();
-        }
+        return $this->mysqli->commit();
     }
 
     public function rollback()
     {
-        if ($this->transaction == true){
-            $this->mysqli->rollback();
-        }
+        return $this->mysqli->rollback();
+    }
+
+    public function autocommit()
+    {
+        return $this->mysqli->autocommit(true);
     }
 
     public function setLogger(LoggerInterface $logger)
