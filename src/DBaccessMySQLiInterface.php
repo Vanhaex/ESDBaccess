@@ -58,11 +58,17 @@ interface DBaccessMySQLiInterface extends LoggerAwareInterface{
 
     /**
      * Fonction qui éxecute une requête SQL simple
+     * 
+     * @param $query
      */
     public function query(string $query);
 
     /**
      * Fonction qui execute une requête préparée
+     * 
+     * @param string $prepared_query
+     * @param string $bind_type
+     * @param $bind_data
      */
     public function preparedQuery(string $prepared_query, string $bind_type, ...$bind_data);
 
@@ -105,6 +111,20 @@ interface DBaccessMySQLiInterface extends LoggerAwareInterface{
      * Vide les variables utilisées par les requêtes
      */
     public function reset_mysqli();
-}
+
+    /**
+     * Démarrer une transaction (https://www.php.net/manual/fr/mysqli.begin-transaction.php)
+     */
+    public function getTransaction();
+
+    /**
+     * Valide la transaction courante (https://www.php.net/manual/fr/mysqli.commit.php)
+     */
+    public function commit();
+
+    /**
+     * Annule la transaction courante (https://www.php.net/manual/fr/mysqli.rollback.php)
+     */
+    public function rollback();
 
 ?>

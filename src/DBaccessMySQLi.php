@@ -35,6 +35,8 @@ class DBaccessMySQLi implements DBaccessMySQLiInterface
 
     private $db_exceptions = true;
 
+    private $transaction = true;
+
     public function initConnexion(DBaccessConnexionInterface $informations)
     {
         $this->setHost($informations->GetHost, $informations->GetPort);
@@ -271,6 +273,27 @@ class DBaccessMySQLi implements DBaccessMySQLiInterface
         $this->insert_id = null;
         $this->affected_rows = null;
         $this->num_of_rows = null;
+    }
+
+    public function getTransaction()
+    {
+        if ($this->transaction == true){
+            $this->mysqli->begin_transaction();
+        }
+    }
+
+    public function commit()
+    {
+        if ($this->transaction == true){
+            $this->mysqli->commit();
+        }
+    }
+
+    public function rollback()
+    {
+        if ($this->transaction == true){
+            $this->mysqli->rollback();
+        }
     }
 
     public function setLogger(LoggerInterface $logger)
