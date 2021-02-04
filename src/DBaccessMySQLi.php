@@ -289,7 +289,7 @@ class DBaccessMySQLi implements DBaccessMySQLiInterface
         return $this->mysqli->rollback();
     }
 
-    public function autocommit()
+    public function autocommit($autocommit = false)
     {
         return $this->mysqli->autocommit(true);
     }

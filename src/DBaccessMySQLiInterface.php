@@ -128,11 +128,11 @@ interface DBaccessMySQLiInterface extends LoggerAwareInterface{
     public function rollback();
 
     /**
-     * Active le mode auto-commit
+     * Active le mode auto-commit (désactivé par défaut)
      * 
-     * @param bool
+     * @param bool $autocommit
      */
-    public function autocommit();
+    public function autocommit(bool $autocommit = false);
 
 }
 ?>
