@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\ESDBaccess;
+namespace ESDBaccess;
 
 /**
  * Décrit les méthodes utilisées pour la classe ESDBaccess
@@ -50,7 +50,7 @@ interface ESDBaccessInterface
 
 
     /**
-     * Execute une requête préparée sur une table donnée en fonction des colonnes et des conditions souhaitées. Le bind type doit être dans la même ordre que les variables données en condition
+     * Execute une requête SELECT préparée sur une table donnée en fonction des colonnes et des conditions souhaitées. Le bind type doit être dans la même ordre que les variables données en condition
      *
      * @param array $columns
      * @param string $table
@@ -58,7 +58,21 @@ interface ESDBaccessInterface
      * @param string $bind_type
      * @param array $bind_data
      */
-    public function preparedQuery(array $columns, string $table, string $condition, string $bind_type, array $bind_data) : void;
+    public function preparedQuerySelect(array $columns, string $table, string $condition, string $bind_type, array $bind_data) : void;
+
+
+    /**
+     * Execute une requête INSERT préparée sur une table donnée en fonction des colonnes et des conditions souhaitées. Le bind type doit être dans la même ordre que les variables données en condition
+     *
+     * @param array $columns
+     * @param array $values
+     * @param string $table
+     * @param string $condition
+     * @param string $bind_type
+     * @param array $bind_data
+     */
+    public function preparedQueryInsert(array $columns, array $values, string $table, string $condition, string $bind_type, array $bind_data) : void;
+
 
     /**
      * Retourne tous les résultats obtenus dans un tableau
@@ -86,6 +100,6 @@ interface ESDBaccessInterface
      *
      * @return int
      */
-    public function runOfRows() : int;
+    public function numOfRows() : int;
 
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\ESDBaccess;
+namespace ESDBaccess;
 
 use mysqli;
 
@@ -13,6 +13,8 @@ class ESDBaccess implements ESDBaccessInterface
     private const MISSING_COLUMNS_DATABASE = -4;
     private const MISSING_TABLE_DATABASE = -5;
     private const MISSING_VALUES_DATABASE = -6;
+    private const QUERY_SELECT_ERROR = -7;
+    private const NEXT_RESULT_NOT_OBJECT = -8;
 
     // Les paramètres de connexion à la bdd
     private $host;
@@ -27,6 +29,7 @@ class ESDBaccess implements ESDBaccessInterface
     // les variables qui sont les métadonnées des requêtes
     private $results;
     private $affectedRows;
+    private $numOfRows;
 
     /**
      * @inheritDoc
@@ -126,7 +129,7 @@ class ESDBaccess implements ESDBaccessInterface
         // On peut donc executer la requete simple
         $execute = $this->sql->real_query($query);
         
-        if ($execute !== false){
+        if ($execute == true){
             // Si la requete réussie et retourne un jeu de résultat on fait quelque chose
             if ($this->sql->field_count){
                 $results = $this->sql->store_result();
@@ -135,36 +138,100 @@ class ESDBaccess implements ESDBaccessInterface
                     array_push($this->results, $obj);
                 }
                 
-                // TODO
+                $this->runOfRows = $this->sql->num_rows;
+
+                $this->results->free();
             }
             else {
                 $this->affectedRows = $this->sql->affected_rows;
             }
+        }
+        else {
+            throw new ESDBaccessException("Une erreur a échoué pour la requête SQL suivante : " . $query, self::QUERY_SELECT_ERROR);
         }
     }
 
     /**
      * @inheritDoc
      */
-    public function queryInsert(array $columns, array $values, string $table, string $condition, bool $where = false): void
+    public function queryInsert(array $columns, array $values, string $table, string $condition): void
     {
-        // TODO: Implement queryInsert() method.
+        // Vérifier si les paramètres sont bien renseignés
+        if (empty($columns)){
+            throw new ESDBaccessException("Aucune colonne n'a été donnée en paramètre", self::MISSING_COLUMNS_DATABASE);
+        }
+        if (empty($values)){
+            throw new ESDBaccessException("Aucune valeur n'a été donnée en paramètre", self::MISSING_VALUES_DATABASE);
+        }
+        if (!isset($table)){
+            throw new ESDBaccessException("Aucune table n'a été donnée paramètre", self::MISSING_TABLE_DATABASE);
+        }
+
+        // On nettoie les variables avant
+        $columns = implode(', ', array_filter(array_map('trim', $columns))); // On supprime les espaces vides puis on sépare tout par une virgule
+        $values = implode(', ', array_filter(array_map('trim', $values))); // On supprime les espaces vides puis on sépare tout par une virgule
+        $table = trim($table);
+        $condition = trim($condition);
+        
+        // On prépare ensuite la requête et on ajoute la condition si elle existe
+        $query = "INSERT INTO (" . $columns . ") VALUES (" . $values . ") " . $table;
+        if ($condition !== ""){
+            $query .= $query . $condition;
+        }
+        
+        $query .= $query . ";";
+        
+        // On peut donc executer la requete simple
+        $execute = $this->sql->real_query($query);
+        
+        if ($execute == true){
+            // Si la requete réussie et retourne un jeu de résultat on fait quelque chose
+            if ($this->sql->field_count){
+                $results = $this->sql->store_result();
+                
+                while ($obj = $results->fetch_object()){
+                    array_push($this->results, $obj);
+                }
+                
+                $this->runOfRows = $this->sql->num_rows;
+
+                $this->results->free();
+            }
+            else {
+                $this->affectedRows = $this->sql->affected_rows;
+            }
+        }
+        else {
+            throw new ESDBaccessException("Une erreur a échoué pour la requête SQL suivante : " . $query, self::QUERY_SELECT_ERROR);
+        }
+
     }
+
 
     /**
      * @inheritDoc
      */
-    public function preparedQuery(array $columns, string $table, string $condition, string $bind_type, array $bind_data): void
+    public function preparedQuerySelect(array $columns, string $table, string $condition, string $bind_type, array $bind_data): void
     {
-        // TODO: Implement preparedQuery() method.
+        // TODO: Implement preparedQuerySelect() method.
     }
+
+
+    /**
+    * @inheritDoc
+    */
+    public function preparedQueryInsert(array $columns, array $values, string $table, string $condition, string $bind_type, array $bind_data): void
+    {
+        // TODO: Implement preparedQueryInsert() method.
+    }
+
 
     /**
      * @inheritDoc
      */
     public function allResults(): array
     {
-        // TODO: Implement allResults() method.
+        return $this->results;
     }
 
     /**
@@ -172,7 +239,15 @@ class ESDBaccess implements ESDBaccessInterface
      */
     public function thisResult()
     {
-        // TODO: Implement thisResult() method.
+        // On va récupérer tous les résultats pour ensuite chercher le premier qui est retourné
+        $thisResult = current($this->results);
+
+        next($thisResult);
+
+        // Par contre, si le résultat n'est pas sous forùe d'objet, erreur
+        if(!is_object($thisResult)){
+            throw new ESDBaccessException("Erreur lors de la récupération. Le résultat n'est pas un array ou un object", self::NEXT_RESULT_NOT_OBJECT);
+        }
     }
 
     /**
@@ -180,15 +255,15 @@ class ESDBaccess implements ESDBaccessInterface
      */
     public function affectedRows(): int
     {
-        // TODO: Implement affectedRows() method.
+        return $this->affectedRows;
     }
 
     /**
      * @inheritDoc
      */
-    public function runOfRows(): int
+    public function numOfRows(): int
     {
-        // TODO: Implement runOfRows() method.
+        return $this->numOfRows;
     }
 
 }
