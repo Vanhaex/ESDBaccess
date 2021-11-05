@@ -1,32 +1,33 @@
 <?php
 
-namespace ESDBaccess;
+namespace Framework\ESDBaccess;
 
 /**
  * Décrit les méthodes utilisées pour la classe ESDBaccess
  */
 interface ESDBaccessInterface
 {
-    /**
-     * La méthode qui va définir les valeurs nécessaires pour se connecter à la base de données
-     *
-     * @param string $host
-     * @param int $port
-     * @param string $user
-     * @param string $password
-     * @param string $database
-     */
-    public function connectionInformation(string $host, int $port, string $user, string $password, string $database) : void;
 
     /**
      * Ouvre une connexion à la base de données, en vérifiant d'abord qu'elle est bien en route.
+     *
+     * @return bool
      */
     public function connectToDB() : bool;
 
     /**
      * Ferme une connexion à la base de données
+     *
+     * @return bool
      */
     public function disconnectToDB() : bool;
+
+    /**
+     * Interroge la base de données pour voir si elle est bien en route
+     *
+     * @return bool
+     */
+    public function pingToDB() : bool;
 
     /**
      * Execute une requête SELECT simple sur une table donnée en fonction des colonnes et des conditions souhaitées
@@ -36,7 +37,7 @@ interface ESDBaccessInterface
      * @param string $condition
      * @param bool $where
      */
-    public function querySelect(array $columns, string $table, string $condition) : void;
+    public function querySelect(string $table, $condition = null, array $columns = null) : void;
 
     /**
      * Execute une requête INSERT simple sur une table donnée en fonction des colonnes et des conditions souhaitées
@@ -46,7 +47,7 @@ interface ESDBaccessInterface
      * @param string $condition
      * @param bool $where
      */
-    public function queryInsert(array $columns, array $values, string $table, string $condition) : void;
+    public function queryInsert(string $table, array $columns, array $values, $condition = null) : void;
 
 
     /**
@@ -79,7 +80,7 @@ interface ESDBaccessInterface
      *
      * @return array
      */
-    public function allResults() : array;
+    public function allResults() : ?array;
 
     /**
      * Retourne le prochain résultat obtenu
