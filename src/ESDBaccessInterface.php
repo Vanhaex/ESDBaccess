@@ -32,48 +32,21 @@ interface ESDBaccessInterface
     /**
      * Execute une requête SELECT simple sur une table donnée en fonction des colonnes et des conditions souhaitées
      *
-     * @param array $columns
      * @param string $table
-     * @param string $condition
-     * @param bool $where
+     * @param array|null $columns
+     * @param string|null $condition
      */
-    public function querySelect(string $table, $condition = null, array $columns = null) : void;
+    public function querySelect(string $table, array $columns = null, string $condition = null) : void;
 
     /**
      * Execute une requête INSERT simple sur une table donnée en fonction des colonnes et des conditions souhaitées
      *
-     * @param array $columns
      * @param string $table
-     * @param string $condition
-     * @param bool $where
-     */
-    public function queryInsert(string $table, array $columns, array $values, $condition = null) : void;
-
-
-    /**
-     * Execute une requête SELECT préparée sur une table donnée en fonction des colonnes et des conditions souhaitées. Le bind type doit être dans la même ordre que les variables données en condition
-     *
-     * @param array $columns
-     * @param string $table
-     * @param string $condition
-     * @param string $bind_type
-     * @param array $bind_data
-     */
-    public function preparedQuerySelect(array $columns, string $table, string $condition, string $bind_type, array $bind_data) : void;
-
-
-    /**
-     * Execute une requête INSERT préparée sur une table donnée en fonction des colonnes et des conditions souhaitées. Le bind type doit être dans la même ordre que les variables données en condition
-     *
      * @param array $columns
      * @param array $values
-     * @param string $table
-     * @param string $condition
-     * @param string $bind_type
-     * @param array $bind_data
+     * @param null $condition
      */
-    public function preparedQueryInsert(array $columns, array $values, string $table, string $condition, string $bind_type, array $bind_data) : void;
-
+    public function queryInsert(string $table, array $columns, array $values, $condition = null) : void;
 
     /**
      * Retourne tous les résultats obtenus dans un tableau
@@ -102,5 +75,28 @@ interface ESDBaccessInterface
      * @return int
      */
     public function numOfRows() : int;
+
+    /**
+     * Active le mode autocommit pour MySQL
+     *
+     * @param false $isActive
+     * @return bool
+     */
+    public function ESDBautocommit(bool $isActive = false) : bool;
+
+    /**
+     * Mode transactionnel, permet de valider la requête. Ne fonctionne que si le mode autocommit est à false
+     *
+     * @return bool
+     */
+    public function ESDBcommit() : bool;
+
+    /**
+     * Mode transactionnel, ne valide pas la requête et revient en arrière. Ne fonctionne que si le mode autocommit est à false
+     *
+     * @return bool
+     */
+    public function ESDBrollback() : bool;
+
 
 }
