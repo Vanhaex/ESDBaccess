@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\ESDBaccess;
+namespace ESDBACCESS;
 
 use mysqli;
 
@@ -154,8 +154,6 @@ class ESDBaccess implements ESDBaccessInterface
 
         $query = $query . ";"; // Sans oublier le ; qui pourrait être nécessaire
 
-        var_dump($query);
-
         try {
             // On peut donc executer la requete simple
             $this->sql->real_query($query);
@@ -227,8 +225,6 @@ class ESDBaccess implements ESDBaccessInterface
         }
 
         $query = $query . ";"; // Sans oublier le ; qui pourrait être nécessaire
-
-        var_dump($query);
 
         try {
             // On peut donc executer la requete simple

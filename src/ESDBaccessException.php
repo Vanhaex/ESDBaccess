@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\ESDBaccess;
+namespace ESDBACCESS;
 
 /**
  * ESDBaccess exception handler.

@@ -4,10 +4,9 @@
     "version": "1.0.0",
     "type": "package",
     "license": "MIT",
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "require": {
-        "php": ">=7.2",
-        "psr/log": "^1.1",
+        "php": ">=7.1",
         "ext-mysqli":"*"
     },
     "autoload": {
