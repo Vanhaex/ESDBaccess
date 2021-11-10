@@ -1,6 +1,6 @@
 <?php
 
-namespace ESDBACCESS;
+namespace ESDBaccess;
 
 use mysqli;
 

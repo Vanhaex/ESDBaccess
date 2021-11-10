@@ -1,6 +1,6 @@
 <?php
 
-namespace ESDBACCESS;
+namespace ESDBaccess;
 
 /**
  * Décrit les méthodes utilisées pour la classe ESDBaccess
