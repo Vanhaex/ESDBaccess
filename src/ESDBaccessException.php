@@ -12,7 +12,7 @@ class ESDBaccessException extends \Exception
     {
         parent::__construct($message, $code, $mysqli_exception);
 
-        // echo "ESDBaccess error ".$code." : " . $message . " " . $mysqli_exception;
+        echo "ESDBaccess error ".$code." : " . $message . " " . $mysqli_exception;
     }
 }
 
