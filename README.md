@@ -17,6 +17,12 @@ L'installation est simple, il vous suffit de cloner ce dépôt en vous rendant d
 git clone https://github.com/Vanhaex/ESDBaccess.git
 ```
 
+Ou alors, si vous avez installée Composer : 
+
+```
+composer require vanhaex/esdbaccess
+```
+
 Une fois que vous avez cloné le dépôt avec succès, vous pouvez suivre le tutoriel ci-dessous afin d'apprendre à utiliser l'ORM.
 
 ## Tutoriel
