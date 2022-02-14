@@ -34,6 +34,7 @@ class ESDBaccess implements ESDBaccessInterface
     private $results;
     private $affectedRows;
     private $numOfRows;
+    private $isActive = false;
 
     /**
      * Constructeur de la classe ESDBaccess
@@ -49,7 +50,7 @@ class ESDBaccess implements ESDBaccessInterface
         // On vérifie d'abord si aucun paramètre n'a été oublié
         foreach (func_get_args() as $args){
             if(empty($args)){
-                new ESDBaccessException("Un ou plusieurs paramètres de connexion à la base de données sont manquants", self::MISSING_PARAMETER);
+                throw new ESDBaccessException("Un ou plusieurs paramètres de connexion à la base de données sont manquants", self::MISSING_PARAMETER);
             }
         }
 
@@ -66,7 +67,6 @@ class ESDBaccess implements ESDBaccessInterface
      */
     public function connectToDB(): bool
     {
-
         try {
             // L'objet est déjà créé, pas besoin de le refaire
             if(!is_null($this->sql)){
@@ -81,11 +81,9 @@ class ESDBaccess implements ESDBaccessInterface
 
             return true;
         }
-        catch (ESDBaccessException $e){
-            new ESDBaccessException("Impossible de se connecter à la base de données " . $this->database, self::CONNECT_ERROR);
+        catch (\mysqli_sql_exception $e){
+            throw new ESDBaccessException("Impossible de se connecter à la base de données " . $this->database, self::CONNECT_ERROR);
         }
-
-
     }
 
     /**
@@ -105,8 +103,8 @@ class ESDBaccess implements ESDBaccessInterface
 
             return true;
         }
-        catch(ESDBaccessException $e){
-            new ESDBaccessException("Impossible de se déconnecter de la base de données " . $this->database, self::DISCONNECT_ERROR);
+        catch(\mysqli_sql_exception $e){
+            throw new ESDBaccessException("Impossible de se déconnecter de la base de données " . $this->database, self::DISCONNECT_ERROR);
         }
     }
 
@@ -125,7 +123,7 @@ class ESDBaccess implements ESDBaccessInterface
     {
         // Vérifier si les paramètres sont bien renseignés
         if (!isset($table)){
-            new ESDBaccessException("Aucune table n'a été donnée paramètre", self::MISSING_TABLE_DATABASE);
+            throw new ESDBaccessException("Aucune table n'a été donnée paramètre", self::MISSING_TABLE_DATABASE);
         }
 
         // On nettoie les colonnes
@@ -160,8 +158,8 @@ class ESDBaccess implements ESDBaccessInterface
 
             $this->execQuery();
         }
-        catch (ESDBaccessException $e){
-            new ESDBaccessException("Une erreur a échoué pour la requête SQL suivante : " . $query, self::QUERY_SELECT_ERROR);
+        catch (\mysqli_sql_exception $e){
+            throw new ESDBaccessException("Une erreur a échoué pour la requête SQL suivante : " . $query, self::QUERY_SELECT_ERROR);
         }
     }
 
@@ -172,18 +170,18 @@ class ESDBaccess implements ESDBaccessInterface
     {
         // Vérifier si les paramètres sont bien renseignés
         if (empty($columns)){
-            new ESDBaccessException("Aucune colonne n'a été donnée en paramètre", self::MISSING_COLUMNS_DATABASE);
+            throw new ESDBaccessException("Aucune colonne n'a été donnée en paramètre", self::MISSING_COLUMNS_DATABASE);
         }
         if (empty($values)){
-            new ESDBaccessException("Aucune valeur n'a été donnée en paramètre", self::MISSING_VALUES_DATABASE);
+            throw new ESDBaccessException("Aucune valeur n'a été donnée en paramètre", self::MISSING_VALUES_DATABASE);
         }
         if (!isset($table)){
-            new ESDBaccessException("Aucune table n'a été donnée paramètre", self::MISSING_TABLE_DATABASE);
+            throw new ESDBaccessException("Aucune table n'a été donnée paramètre", self::MISSING_TABLE_DATABASE);
         }
 
         // il faut également que le nombre de colonnes renseignées soit identique au nombre de valeurs
         if (sizeof($columns) !== sizeof($values)){
-            new ESDBaccessException("Le nombre de colonnes doit être identique au nombre de valeurs", self::ERROR_ORDER_VALUES);
+            throw new ESDBaccessException("Le nombre de colonnes doit être identique au nombre de valeurs", self::ERROR_ORDER_VALUES);
         }
 
         // On nettoie les variables avant
@@ -232,8 +230,8 @@ class ESDBaccess implements ESDBaccessInterface
 
             $this->execQuery();
         }
-        catch (ESDBaccessException $e){
-            new ESDBaccessException("Une erreur a échoué pour la requête SQL suivante : " . $query, self::QUERY_SELECT_ERROR);
+        catch (\mysqli_sql_exception $e){
+            throw new ESDBaccessException("Une erreur a échoué pour la requête SQL suivante : " . $query, self::QUERY_SELECT_ERROR);
         }
 
     }
@@ -254,12 +252,14 @@ class ESDBaccess implements ESDBaccessInterface
         // On va récupérer tous les résultats pour ensuite chercher le premier qui est retourné
         $thisResult = current($this->results);
 
-        next($thisResult);
+        next($this->results);
 
-        // Par contre, si le résultat n'est pas sous forùe d'objet, erreur
+        // Par contre, si le résultat n'est pas sous forme d'objet, erreur
         if(!is_object($thisResult)){
-            new ESDBaccessException("Erreur lors de la récupération. Le résultat n'est pas un array ou un object", self::NEXT_RESULT_NOT_OBJECT);
+            throw new ESDBaccessException("Erreur lors de la récupération. Le résultat n'est pas un array ou un object", self::NEXT_RESULT_NOT_OBJECT);
         }
+
+        return $thisResult;
     }
 
     /**
@@ -281,7 +281,7 @@ class ESDBaccess implements ESDBaccessInterface
     /**
      * @inheritDoc
      */
-    public function ESDBautocommit($isActive = false): bool
+    public function ESDBautocommit(bool $isActive): bool
     {
         return $this->sql->autocommit($isActive);
     }
@@ -291,7 +291,7 @@ class ESDBaccess implements ESDBaccessInterface
      */
     public function ESDBcommit(): bool
     {
-        if (self::ESDBautocommit() == false){
+        if (self::ESDBautocommit($this->isActive) == false){
             return $this->sql->commit();
         }
         else {
@@ -304,7 +304,7 @@ class ESDBaccess implements ESDBaccessInterface
      */
     public function ESDBrollback(): bool
     {
-        if (self::ESDBautocommit() == false){
+        if (self::ESDBautocommit($this->isActive) == false){
             return $this->sql->rollback();
         }
         else {
