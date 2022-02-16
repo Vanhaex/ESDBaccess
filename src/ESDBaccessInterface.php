@@ -82,7 +82,7 @@ interface ESDBaccessInterface
      * @param false $isActive
      * @return bool
      */
-    public function ESDBautocommit(bool $isActive = false) : bool;
+    public function ESDBautocommit(bool $isActive) : bool;
 
     /**
      * Mode transactionnel, permet de valider la requête. Ne fonctionne que si le mode autocommit est à false

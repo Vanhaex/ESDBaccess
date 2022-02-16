@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 16/02/22
+**Version 1.0.2**
+- BUGFIX : La fonction ESDBautocommit ne respectait pas ce qui était définit dans l'interface. La valeur par défaut "false" dans ESDBaccessInterface a été supprimée
+- Remplacement de "self::" par "$this->" dans la classe ESDBaccess car utilisée par des classes non statiques
+
 ## 14/02/22
 **Version 1.0.1**
 - Ajout des méthodes "throw new" manquantes qui ne jetaient pas d'exceptions

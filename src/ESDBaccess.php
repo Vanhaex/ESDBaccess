@@ -291,7 +291,7 @@ class ESDBaccess implements ESDBaccessInterface
      */
     public function ESDBcommit(): bool
     {
-        if (self::ESDBautocommit($this->isActive) == false){
+        if ($this->ESDBautocommit($this->isActive) == false){
             return $this->sql->commit();
         }
         else {
@@ -304,7 +304,7 @@ class ESDBaccess implements ESDBaccessInterface
      */
     public function ESDBrollback(): bool
     {
-        if (self::ESDBautocommit($this->isActive) == false){
+        if ($this->ESDBautocommit($this->isActive) == false){
             return $this->sql->rollback();
         }
         else {
