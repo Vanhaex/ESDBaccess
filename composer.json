@@ -1,7 +1,6 @@
 {
     "name": "vanhaex/esdbaccess",
     "description": "Une interface de connexion à la base de données qui utilise le moteur MySQLi",
-    "version": "1.0.2",
     "type": "package",
     "license": "MIT",
     "minimum-stability": "stable",
